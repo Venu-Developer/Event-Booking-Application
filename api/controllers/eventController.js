@@ -56,20 +56,14 @@ const bookEvent = (req, res) => {
     event.seats--;
     event.bookings.push({ name, email });
 
-    //  send mail
-    // sendBookingEmail({
-    //   to: email,
-    //   name,
-    //   eventTitle: event.title,
-    //   date: event.date
-    // });
-
+  
     //  REAL-TIME EVENT (ID MATCH)
     io.emit("seatUpdated", {
       eventId: event.id,
       seats: event.seats,
     });
 
+     //  send mail
     sendBookingEmail({
       to: email,
       name,
