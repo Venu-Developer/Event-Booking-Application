@@ -21,7 +21,7 @@ export default function EventCard({ event, onBook }) {
           <p className="text-2xl md:text-3xl  text-gray-600 flex items-center gap-2">
             <span className="font-medium">Date:</span> 
             {event.date}
-            <span aria-hidden="true">📅</span>
+            
           </p>
 
           <p 
