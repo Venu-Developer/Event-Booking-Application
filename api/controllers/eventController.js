@@ -1,9 +1,7 @@
-import { events } from '../data/events.js';
-import { sendBookingEmail } from '../utils/mailer.js';
+import { events } from "../data/events.js";
+import { sendBookingEmail } from "../utils/mailer.js";
 
-
-
- const getEvents = (req, res) => {
+const getEvents = (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
@@ -19,11 +17,10 @@ import { sendBookingEmail } from '../utils/mailer.js';
         currentPage: page,
         totalPages: Math.ceil(events.length / limit),
         totalItems: events.length,
-      }
+      },
     });
-
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch events' });
+    res.status(500).json({ message: "Failed to fetch events" });
   }
 };
 
@@ -31,23 +28,28 @@ import { sendBookingEmail } from '../utils/mailer.js';
 const bookEvent = (req, res) => {
   try {
     const { eventId, name, email } = req.body;
-    const io = req.app.get('io');
-
+    const io = req.app.get("io");
     if (!eventId || !name || !email) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return res.status(400).json({ message: "All fields are required" });
     }
-
-    const event = events.find(e => e.id === eventId);
+    const event = events.find((e) => e.id === eventId);
     if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+      return res.status(404).json({ message: "Event not found" });
+    }
+    const eventDate = new Date(event.date); // 2026-02-10
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (eventDate < today) {
+      return res.status(400).json({ message: "Event date is expired" });
     }
 
     if (event.seats <= 0) {
-      return res.status(400).json({ message: 'Sold out' });
+      return res.status(400).json({ message: "Sold out" });
     }
 
-    if (event.bookings.some(b => b.email === email)) {
-      return res.status(409).json({ message: 'Duplicate booking not allowed' });
+    if (event.bookings.some((b) => b.email === email)) {
+      return res.status(409).json({ message: "Duplicate booking not allowed" });
     }
 
     // update state
@@ -62,30 +64,28 @@ const bookEvent = (req, res) => {
     //   date: event.date
     // });
 
+    //  REAL-TIME EVENT (ID MATCH)
+    io.emit("seatUpdated", {
+      eventId: event.id,
+      seats: event.seats,
+    });
+
     sendBookingEmail({
       to: email,
       name,
       eventTitle: event.title,
       date: event.date,
-    }).catch(err => console.error('Email failed:', err.message));
-
-    //  REAL-TIME EVENT (ID MATCH)
-    io.emit('seatUpdated', {
-      eventId: event.id,
-      seats: event.seats
-    });
+    }).catch((err) => console.error("Email failed:", err.message));
 
     res.status(200).json({
-      message: 'Booking successful',
+      message: "Booking successful",
       // eventId: event.id,
       // seats: event.seats
     });
-
   } catch (error) {
-    console.error('Booking error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Booking error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-
-export {getEvents,bookEvent}
+export { getEvents, bookEvent };
