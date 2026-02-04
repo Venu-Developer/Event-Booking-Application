@@ -6,9 +6,11 @@ const app = express();
 
 // Enable CORS for frontend access
 app.use(cors({
-  origin: '*', // replace with front url
-  methods: ['GET', 'POST'], //backend allowing methods
+  origin: 'https://event-booking-application-client.vercel.app',
+  methods: ['GET', 'POST'],
+  credentials: true
 }));
+
 
 // Parse incoming JSON requests
 app.use(express.json());
