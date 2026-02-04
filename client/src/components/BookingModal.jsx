@@ -38,70 +38,80 @@ const BookingModal = ({ event, onSubmit, onClose, loading }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl w-full max-w-sm p-6 relative">
+   <div className="fixed inset-0 bg-black/60 z-50 animate-fadeIn">
+  <div className="relative w-full h-full overflow-y-auto flex justify-content items-center">
 
-        {/* Close icon */}
-        <button
-          onClick={onClose}
-          className="absolute right-3 top-3 text-gray-400 hover:text-red-600"
-        >
-          {/* <X size={18} /> */} X
-        </button>
+    {/* Content container */}
+    <div className="relative bg-white mx-auto  h-fit
+                    w-[95%] max-w-5xl 
+                    px-6 py-10 sm:px-10">
 
-        <h2 className="text-lg font-semibold text-gray-800">
-          Book Event
-        </h2>
-        <p className="text-sm text-gray-500 mb-4">
-          {event.title}
-        </p>
+      {/* Close icon */}
+      <button
+        onClick={onClose}
+        className="absolute right-5 top-5 text-red-400 hover:text-red-600 rounded-full bg-slate-100 p-2"
+      >
+        X
+      </button>
 
-        {/* Name */}
-        <div className="mb-3">
-          <input
-            name="name"
-            placeholder="Your Name"
-            value={form.name}
-            onChange={handleChange}
-            className={`w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring-2
-              ${errors.name ? 'border-red-500 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-400'}
-            `}
-          />
-          {errors.name && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.name}
-            </p>
-          )}
-        </div>
+      <h2 className="text-4xl sm:text-5xl font-semibold text-gray-800">
+        Book Event
+      </h2>
 
-        {/* Email */}
-        <div className="mb-4">
-          <input
-            name="email"
-            placeholder="Your Email"
-            value={form.email}
-            onChange={handleChange}
-            className={`w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring-2
-              ${errors.email ? 'border-red-500 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-400'}
-            `}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.email}
-            </p>
-          )}
-        </div>
+      <p className="text-2xl sm:text-3xl text-gray-500 mb-6 mt-2">
+        {event.title}
+      </p>
 
-        {/* Submit */}
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium disabled:opacity-50"
-        >
-          {loading ? 'Booking...' : 'Confirm Booking'}
-        </button>
+      {/* Name */}
+      <div className="mb-4">
+        <input
+          name="name"
+          placeholder="Your Name"
+          value={form.name}
+          onChange={handleChange}
+          className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 text-2xl
+            ${errors.name
+              ? 'border-red-500 focus:ring-red-400'
+              : 'border-gray-300 focus:ring-blue-400'}
+          `}
+        />
+        {errors.name && (
+          <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+        )}
       </div>
+
+      {/* Email */}
+      <div className="mb-6">
+        <input
+          name="email"
+          placeholder="Your Email"
+          value={form.email}
+          onChange={handleChange}
+          className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 text-2xl
+            ${errors.email
+              ? 'border-red-500 focus:ring-red-400'
+              : 'border-gray-300 focus:ring-blue-400'}
+          `}
+        />
+        {errors.email && (
+          <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+        )}
+      </div>
+
+      {/* Submit */}
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium disabled:opacity-50 text-2xl"
+      >
+        {loading ? 'Booking...' : 'Confirm Booking'}
+      </button>
+
     </div>
+  </div>
+</div>
+
+
   );
 };
 

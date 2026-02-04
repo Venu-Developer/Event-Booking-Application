@@ -42,10 +42,10 @@ export default function Home() {
   if (isError) return <p>Failed to load events</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-5 md:mt-10">
 
       {/* Events Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 xl:grid-cols-2  gap-5">
         {events.length > 0 ? (
           events.map(event => (
             <EventCard
