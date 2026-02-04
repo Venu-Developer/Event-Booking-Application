@@ -1,2 +1,9 @@
-import { io } from 'socket.io-client';
-export const socket = io('https://event-booking-application-81f2.onrender.com');
+
+import { io } from "socket.io-client";
+
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+
+export const socket = io(SOCKET_URL, {
+  transports: ["websocket"],   // important for CORS
+  withCredentials: true,
+});
